@@ -1,63 +1,55 @@
-// import { Component } from '@angular/core';
-// import { FormsModule } from '@angular/forms';
-// import { RouterLink } from '@angular/router';
 
-
-// @Component({
-//   selector: 'app-payment',
-//   imports: [FormsModule, RouterLink],
-//   templateUrl: './payment.component.html',
-//   styleUrl: './payment.component.css'
-// })
-// export class PaymentComponent {
-//   amount: number | null = null;
-//   paybill: string = '';
-//   phone: string = '';
-
-// }
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
+import { PaymentService } from '../services/payment.service';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-payment',
-  imports: [FormsModule],
+  standalone: true,
+  imports: [FormsModule, HttpClientModule, CommonModule],
   templateUrl: './payment.component.html',
-  styleUrls: ['./payment.component.css']
+  styleUrls: ['./payment.component.css'],
+  providers: [PaymentService]
 })
 export class PaymentComponent {
   amount: number | null = null;
   paybill: string = '';
   phone: string = '';
+  isProcessing: boolean = false;
+  error: string | null = null;
 
-  constructor(private router: Router) {}
-
+  constructor(
+    private router: Router,
+    private paymentService: PaymentService
+  ) {}
 
   onPaymentClick() {
+    if (!this.amount || !this.paybill || !this.phone) {
+      this.error = 'Please fill in all fields';
+      return;
+    }
 
-    this.processPayment()
-      .then(() => {
+    this.isProcessing = true;
+    this.error = null;
 
+    this.paymentService.initiatePayment({
+      amount: this.amount,
+      phone: this.phone,
+      paybill: this.paybill
+    }).subscribe({
+      next: (response) => {
+        console.log('Payment initiated:', response);
+        this.isProcessing = false;
         this.router.navigate(['/success']);
-      })
-      .catch(error => {
-
+      },
+      error: (error) => {
         console.error('Payment failed:', error);
-      });
-  }
-
-
-  private processPayment(): Promise<void> {
-    return new Promise((resolve, reject) => {
-
-      setTimeout(() => {
-        resolve();  
-      }, 1000);
+        this.isProcessing = false;
+        this.error = 'Payment failed. Please try again.';
+      }
     });
   }
 }
-
-
-
-
-

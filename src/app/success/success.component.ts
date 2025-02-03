@@ -1,15 +1,4 @@
-// import { Component } from '@angular/core';
 
-// @Component({
-//   selector: 'app-success',
-//   imports: [],
-//   templateUrl: './success.component.html',
-//   styleUrl: './success.component.css'
-// })
-// export class SuccessComponent {
-
-// }
-// success.component.ts
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 

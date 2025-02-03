@@ -13,7 +13,9 @@
         "build": {
           "builder": "@angular-devkit/build-angular:application",
           "options": {
+
             "outputPath": "dist/payment-app-two",
+            
             "index": "src/index.html",
             "browser": "src/main.ts",
             "polyfills": [
@@ -101,5 +103,7 @@
   "cli": {
     "analytics": "244e20ac-0f8b-4fb6-bcff-66ce3a9b883a"
   }
-  
+
+
 }
+

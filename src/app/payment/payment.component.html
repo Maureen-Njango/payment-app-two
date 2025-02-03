@@ -75,7 +75,10 @@ input.invalid {
       <label for="phone">Phone Number</label>
       <input type="tel" id="phone" [(ngModel)]="phone" name="phone" placeholder="Enter phone number" required>
     </div>
-    <button type="submit" class="btn" (click)="onPaymentClick()">Send Payment</button>
-  </form>
+    <button id="btn"
+    (click)="onPaymentClick()"
+    [disabled]="isProcessing">
+    {{ isProcessing ? 'Processing...' : 'Make Payment' }}
+  </button>  </form>
 </div>
 
